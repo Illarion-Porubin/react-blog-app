@@ -38,7 +38,6 @@ export const Login = () => {
     if('token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token)
     } 
-    console.log(data, 'data')
   }
 
 
@@ -62,7 +61,8 @@ export const Login = () => {
           fullWidth
         />
         <TextField className={styles.field}
-          label="Пароль"
+          label="password"
+          type="password"
           error={Boolean(errors.password?.message)}
           helperText={errors.password?.message}
           {...register('password', { required: 'Укажите password' })}

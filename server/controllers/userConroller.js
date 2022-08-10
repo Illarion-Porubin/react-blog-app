@@ -9,7 +9,6 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(8); //алгаритм шифрования
     const hash = await bcrypt.hash(password, salt); // шифруем пароль в переменную
 
-
     const doc = new UserModel({
       email: req.body.email,
       fullName: req.body.fullName,
@@ -17,7 +16,6 @@ export const register = async (req, res) => {
       passwordHash: hash,
     })
 
-    console.log(doc, 'doc')
     const user = await doc.save();
 
     const token = jwt.sign(

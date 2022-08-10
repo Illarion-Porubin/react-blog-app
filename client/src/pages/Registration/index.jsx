@@ -27,8 +27,6 @@ export const Registration = () => {
 
   const onSubmit = async (values) => {
     const data = await dispatch(fetchRegister(values))
-
-    console.log(data, 'data.payload')
     if(!data.payload) {
       alert('Не удалось зарегистрироваться!')
     }
@@ -36,7 +34,6 @@ export const Registration = () => {
     if('token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token)
     } 
-    console.log(data, 'data')
   }
 
 

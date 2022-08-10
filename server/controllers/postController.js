@@ -48,7 +48,6 @@ export const getOne = async (req, res) => {
             message: `Не удалось вернуть статьи`
           });
         }
-        console.log(doc)
         if (!doc) {
           return res.status(404).json({
             message: `Статья не найдена`
@@ -56,7 +55,7 @@ export const getOne = async (req, res) => {
         }
         res.json(doc)
       }
-    )
+    ).populate('user');
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -66,12 +65,13 @@ export const getOne = async (req, res) => {
 }
 
 export const create = async (req, res) => {
+  console.log(true)
   try {
     const doc = new PostModel({
       imageUrl: req.body.imageUrl,
       title: req.body.title,
       text: req.body.text,
-      tags: req.body.tags,
+      tags: req.body.tags.split(','),
       user: req.userId,
     })
 
@@ -87,13 +87,13 @@ export const create = async (req, res) => {
 }
 
 export const remove = async (req, res) => {
+  console.log(req.params)
   try {
     const postId = req.params.id // вытаскивем id 
     PostModel.findOneAndDelete({
       _id: postId,
     }, (err, doc) => {
       if (err) {
-        console.log(err);
         res.status(500).json({
           message: `Не удалось удалить статьи`
         });
@@ -103,7 +103,6 @@ export const remove = async (req, res) => {
           message: `Статья не найдена`
         });
       }
-
       res.json({
         success: true,
       })
@@ -129,7 +128,7 @@ export const update = async (req, res) => {
         imageUrl: req.body.imageUrl,
         title: req.body.title,
         text: req.body.text,
-        tags: req.body.tags,
+        tags: req.body.tags.split(','),
         user: req.userId,
       },
     )

@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
@@ -10,6 +9,9 @@ import { Link } from 'react-router-dom';
 import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
+import { useDispatch } from 'react-redux';
+import { fetchRemovePost } from '../../redux/slices/posts';
+
 
 export const Post = ({
   id,
@@ -25,13 +27,20 @@ export const Post = ({
   isLoading,
   isEditable,
 }) => {
+  const dispatch = useDispatch()
   if (isLoading) {
     return <PostSkeleton />;
   }
-  console.log(createdAt)
-  const onClickRemove = () => {};
+
+  const onClickRemove = () => {
+    if(window.confirm('Are you sure you wont to delete this article?')){
+      dispatch(fetchRemovePost(id))
+    }
+  };
 
   const correctAt = String(createdAt).slice(0, 10) + " " + String(createdAt).slice(11, 16)
+
+ 
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>

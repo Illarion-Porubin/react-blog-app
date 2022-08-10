@@ -30,40 +30,38 @@ const upload = multer({ storage })
 app.use('/uploads', express.static('uploads')) //объясняем express, что будем взаимодействовать со статичными файлами
 
 app.post('/upload', upload.single('image'), (req, res) => {
-  console.log(req.file.originalname, '<<<<<<<<<<<')
   res.json({
     url: `/uploads/${req.file.originalname}`,
   });
-})
+});
 
 
 app.post('/auth/login',
   loginValidation,
   handleValidationErrors,
-  UserController.login)
+  UserController.login);
 app.post('/auth/register',
   registerValidation,
   handleValidationErrors,
-  UserController.register)
+  UserController.register);
 app.post('/posts',
   checkAuth,
   postCreateValidation,
   handleValidationErrors,
-  PostController.create)
+  PostController.create);
 
-app.get('/tags', PostController.getLastTags)
-
-app.get('/posts', PostController.getAll)
-app.get('/posts/tags', PostController.getLastTags)
-app.get('/posts/:id', PostController.getOne)
-app.get('/auth/me', checkAuth, UserController.getMe)
-app.delete('/posts/:id', checkAuth, PostController.remove)
+app.get('/tags', PostController.getLastTags);
+app.get('/posts', PostController.getAll);
+app.get('/posts/tags', PostController.getLastTags);
+app.get('/posts/:id', PostController.getOne);
+app.get('/auth/me', checkAuth, UserController.getMe);
+app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch(
   '/posts/:id',
   checkAuth,
   postCreateValidation,
   handleValidationErrors,
-  PostController.update)
+  PostController.update);
 
 
 app.listen(4444, (err) => {

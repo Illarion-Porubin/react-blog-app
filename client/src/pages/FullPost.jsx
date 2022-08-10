@@ -4,6 +4,8 @@ import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 import axios from "../axios";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export const FullPost = () => {
   const [data, setData] = React.useState()
@@ -27,14 +29,12 @@ export const FullPost = () => {
     return <Post is isLoading={isLoading} isFullPost />
   }
   
-  console.log(data)
-  
   return (
     <>
       <Post
         id={data._id}
         title={data.title}
-        imageUrl={data.imageUrl}
+        imageUrl={data.imageUrl ? `http://localhost:4444${data.imageUrl}` : ''}
         user={data.user}
         createdAt={data.updatedAt}
         viewsCount={data.viewsCount}
@@ -42,9 +42,7 @@ export const FullPost = () => {
         tags={data.tags}
         isFullPost
       >
-        <p>
-          {data.text}
-        </p>
+        <ReactMarkdown children={data.text}  remarkPlugins={[remarkGfm]}/>
       </Post>
       <CommentsBlock
         items={[

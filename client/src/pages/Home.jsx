@@ -13,10 +13,9 @@ import { fetchPosts, fetchTags } from '../redux/slices/posts';
 
 export const Home = () => {
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.data);
   const { posts, tags } = useSelector(state => state.posts);
-  // const { auth } = useSelector(state => state.auth);
 
-  // console.log(auth.status)
 
   const isPostLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
@@ -25,8 +24,7 @@ export const Home = () => {
     dispatch(fetchPosts())
     dispatch(fetchTags())
   }, [dispatch])
-
-  console.log(posts.items.map(item => item), 'posts')
+  
   return (
     <>
       <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
@@ -35,24 +33,24 @@ export const Home = () => {
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
-          {(isPostLoading ? [...Array(5)] : posts.items).map((obj, i) => 
+          {(isPostLoading ? [...Array(5)] : posts.items).map((obj, i) =>
             isPostLoading ? (
-            <Post key={i} isLoading={true}/>
-          ) :
-            (
-              <Post
-                key={obj._id} 
-                id={obj._id}
-                title={obj.title}
-                imageUrl={obj.imageUrl}
-                user={obj.user}
-                createdAt={obj.user.createdAt}
-                viewsCount={obj.viewsCount}
-                commentsCount={3}
-                tags={obj.tags}
-                isEditable
-              />
-            ),
+              <Post key={i} isLoading={true} />
+            ) :
+              (
+                <Post
+                  key={obj._id}
+                  id={obj._id}
+                  title={obj.title}
+                  imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''}
+                  user={obj.user}
+                  createdAt={obj.user.createdAt}
+                  viewsCount={obj.viewsCount}
+                  commentsCount={3}
+                  tags={obj.tags}
+                  isEditable={userData?._id === obj.user._id}
+                />
+              ),
           )}
         </Grid>
         <Grid xs={4} item>
